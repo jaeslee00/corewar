@@ -6,15 +6,17 @@
 #    By: jaelee <jaelee@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/11 17:52:11 by jaelee            #+#    #+#              #
-#    Updated: 2019/03/11 18:27:28 by jaelee           ###   ########.fr        #
+#    Updated: 2019/03/11 22:50:28 by jaelee           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = assembler
+NAME = asm
 SRCS = main.c \
-		op.c
+		read_file.c \
+		op.c \
+		error.c
 INCLUDES = ./includes/assembler.h \
-			./includdes/op.h \
+			./includes/op.h \
 			./libft/includes/libft.h
 OBJS = $(patsubst %.c,obj/%.o,$(SRCS))
 CC = gcc
@@ -30,7 +32,7 @@ $(NAME): $(OBJS) libft/libft.a
 obj:
 	mkdir -p obj
 
-obj/%.o : src/%.c $(INCLUDES) | obj
+$(OBJS): obj/%.o: src/%.c $(INCLUDES) | obj
 	$(CC) $(CFLAGS) $(INCLUDE_FOLDERS) -c $< -o $@
 
 libft/libft.a: libft/includes/libft.h

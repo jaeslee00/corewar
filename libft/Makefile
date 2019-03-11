@@ -100,10 +100,7 @@ SRCS = ft_memset.c \
 OBJS = $(patsubst %.c,obj/%.o,$(SRCS))
 
 CC = gcc
-ifndef CFLAGS_WARNINGS
-export CFLAGS_WARNINGS = 1
-export CFLAGS := $(CFLAGS) -Wall -Wextra -Werror
-endif
+CFLAGS := $(FLAGS) -Wall -Wextra -Werror
 INCLUDES = includes/libft.h \
 		includes/list.h \
 		includes/get_next_line.h

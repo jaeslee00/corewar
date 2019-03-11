@@ -6,7 +6,7 @@
 /*   By: jaelee <jaelee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 11:17:09 by jaelee            #+#    #+#             */
-/*   Updated: 2019/03/11 18:21:35 by jaelee           ###   ########.fr       */
+/*   Updated: 2019/03/12 00:28:54 by jaelee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include "list.h"
 # include "op.h"
 # include <stdint.h>
+# define ASM_FAIL 0
+# define ASM_SUCCESS 1
 
 typedef enum e_token_types
 {
@@ -29,6 +31,7 @@ typedef enum e_token_types
 	T_INDIRECT,
 	T_DIRLAB,
 	T_INDIRLAB,
+	T_UNKNOWN
 }			t_token_types;
 
 # define TOKEN ((t_token*)(lst->content))
@@ -50,7 +53,7 @@ typedef struct	s_line
 	int					type;
 	size_t				nbr_params;
 	size_t				id;
-	size_t				pos;
+	size_t				index;
 	char				*bytecode;
 
 }				t_line;
@@ -63,6 +66,10 @@ typedef struct	s_file
 	char		*name_cor;
 	int			fd_cor;
 	int			fd_s;
+	int			ret;
 }				t_file;
+
+void	file_error(char *str);
+int		read_file(t_file *file);
 
 #endif

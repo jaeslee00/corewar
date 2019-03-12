@@ -6,7 +6,7 @@
 /*   By: jaelee <jaelee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 22:17:00 by jaelee            #+#    #+#             */
-/*   Updated: 2019/03/12 00:30:34 by jaelee           ###   ########.fr       */
+/*   Updated: 2019/03/12 14:14:58 by jaelee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,17 @@ static size_t	label_check(char *line)
 
 int		create_line(t_file *file, char *line, size_t nbr_lines, int line_type)
 {
-	t_line *new_line;
+	t_line new_line;
 
-	new_line = (t_line*)malloc(sizeof(t_line));
-	new_line->tokens = NULL;
-	new_line->str = NULL;
-	new_line->nbr_params = 0;
-	new_line->id = nbr_lines;
-	new_line->type = line_type;
-	new_line->index = 0;
-	new_line->bytecode = NULL;
+	new_line.tokens = NULL;
+	new_line.str = ft_strtrim(line);
+	new_line.nbr_params = 0;
+	new_line.id = nbr_lines;
+	new_line.type = line_type;
+	new_line.index = 0;
+	new_line.bytecode = NULL;
+	if (new_line.str && *(new_line.str))
+		list_append(&(file->lines), list_new(&new_line, sizeof(new_line)));
 	return (1);
 }
 
@@ -65,9 +66,9 @@ int		add_lines(t_file *file, char *line, size_t *nbr_lines, size_t label_pos)
 	len = ft_strlen(line);
 	if (label_pos)
 	{
-		line[label_pos] = '\0';
+		line[label_pos + 1] = '\0';
 		create_line(file, line, *nbr_lines, T_LABEL);
-		line[label_pos] = ' ';
+		line[label_pos + 1] = ' ';
 		if (len > label_pos + 1 && !is_whitespaces_line((&line[label_pos + 2])))
 			create_line(file, line + label_pos + 2, ++(*nbr_lines), T_UNKNOWN);
 
@@ -96,13 +97,25 @@ int		read_file(t_file *file)
 		if (add_lines(file, line, &nbr_lines, label_check(line)) == ASM_FAIL)
 		{
 			free(line);
-			file_error("syntax error in line.\n");
+			file_error("syntax error in line.\n", file);
 		}
 		free(line);
 		nbr_lines++;
 	}
+	free(line);
 	if (file->ret == -1)
-		file_error("get_next_line failed.\n");
-	file->nbr_line = nbr_lines;
+		file_error("get_next_line failed.\n", file);
+	else if ((file->nbr_line = nbr_lines) == 0)
+		file_error("no instructions.\n", file);
+
+	int i = 0;
+	t_list *traverse;
+	traverse = file->lines;
+	while (traverse != NULL)
+	{
+		printf("line[%d] = %s\n", i, ((t_line*)traverse->content)->str);
+		traverse = traverse->next;
+		i++;
+	}
 	return (1);
 }

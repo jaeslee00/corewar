@@ -6,7 +6,7 @@
 /*   By: jaelee <jaelee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 11:17:09 by jaelee            #+#    #+#             */
-/*   Updated: 2019/03/12 00:28:54 by jaelee           ###   ########.fr       */
+/*   Updated: 2019/03/12 13:18:03 by jaelee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "list.h"
 # include "op.h"
 # include <stdint.h>
+#include <stdio.h>
 # define ASM_FAIL 0
 # define ASM_SUCCESS 1
 
@@ -69,7 +70,7 @@ typedef struct	s_file
 	int			ret;
 }				t_file;
 
-void	file_error(char *str);
+void	file_error(const char *str, t_file *file);
 int		read_file(t_file *file);
 
 #endif

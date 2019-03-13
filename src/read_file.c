@@ -6,7 +6,7 @@
 /*   By: jaelee <jaelee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 22:17:00 by jaelee            #+#    #+#             */
-/*   Updated: 2019/03/12 14:14:58 by jaelee           ###   ########.fr       */
+/*   Updated: 2019/03/12 18:10:06 by jaelee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ int		create_line(t_file *file, char *line, size_t nbr_lines, int line_type)
 	t_line new_line;
 
 	new_line.tokens = NULL;
-	new_line.str = ft_strtrim(line);
+	if (!(new_line.str = ft_strtrim(line)))
+		file_error("ft_strtrim failed", file);
 	new_line.nbr_params = 0;
 	new_line.id = nbr_lines;
 	new_line.type = line_type;
@@ -74,9 +75,8 @@ int		add_lines(t_file *file, char *line, size_t *nbr_lines, size_t label_pos)
 
 	}
 	else
-	{
 		create_line(file, line, *nbr_lines, T_UNKNOWN);
-	}
+	free(line);
 	return (1);
 }
 
@@ -97,16 +97,15 @@ int		read_file(t_file *file)
 		if (add_lines(file, line, &nbr_lines, label_check(line)) == ASM_FAIL)
 		{
 			free(line);
-			file_error("syntax error in line.\n", file);
+			file_error("syntax error in line.", file);
 		}
-		free(line);
 		nbr_lines++;
 	}
 	free(line);
 	if (file->ret == -1)
-		file_error("get_next_line failed.\n", file);
+		file_error("get_next_line failed.", file);
 	else if ((file->nbr_line = nbr_lines) == 0)
-		file_error("no instructions.\n", file);
+		file_error("no instructions.", file);
 
 	int i = 0;
 	t_list *traverse;

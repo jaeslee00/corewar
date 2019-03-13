@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list_del.c                                         :+:      :+:    :+:   */
+/*   parse_lines.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaelee <jaelee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/09 00:26:19 by aamadori          #+#    #+#             */
-/*   Updated: 2019/03/12 14:23:20 by jaelee           ###   ########.fr       */
+/*   Created: 2019/03/12 18:10:50 by jaelee            #+#    #+#             */
+/*   Updated: 2019/03/12 18:55:42 by jaelee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "list.h"
-#include "libft.h"
-#include <stdlib.h>
+#include "assembler.h"
 
-void	list_del(t_list **alst, void (*del)(void *, size_t))
-{
-	t_list	*node;
-	t_list	*tmp_node;
+categorize the line type
+.name = T_NAME
+.comment = T_CMD_COMMENT
 
-	if (alst)
-	{
-		node = *alst;
-		while (node)
-		{
-			del(node->content, node->content_size);
-			tmp_node = node;
-			node = node->next;
-			free(tmp_node);
-		}
-		*alst = NULL;
-	}
-}
+different tokens
+	- T_LABEL = string + :
+
+	- T_INSTR
+		- 1 params instructions
+		- 2 params instructions
+		- 3 params instructions
+	- parameters
+		- T_REGISTRY = r + INTEGER
+		- T_DIRECT = % + INTEGER
+		- T_DIRLAB = % + : + LABEL
+		- T_INDIRECT = INTEGER /* error ? */
+		- T_INDIRLAB = : + LABEL

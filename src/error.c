@@ -6,7 +6,7 @@
 /*   By: jaelee <jaelee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 22:01:53 by jaelee            #+#    #+#             */
-/*   Updated: 2019/03/12 14:20:58 by jaelee           ###   ########.fr       */
+/*   Updated: 2019/03/12 14:29:21 by jaelee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	file_error(const char *str, t_file *file)
 	if (file->name_cor)
 		free(file->name_cor);
 	list_del(&(file->lines), free_line_content);
-	printf("free_done\n");
 	if (str)
 		ft_putendl(str);
+	exit(1);
 }

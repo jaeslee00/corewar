@@ -6,7 +6,7 @@
 /*   By: jaelee <jaelee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 11:15:51 by jaelee            #+#    #+#             */
-/*   Updated: 2019/03/13 11:17:50 by jaelee           ###   ########.fr       */
+/*   Updated: 2019/03/15 06:09:21 by jaelee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,12 @@ static void	init_file(t_file *file)
 int		main(int argc, char **argv)
 {
 	t_file	file;
-	int		read;
 
 	init_file(&file);
 	check_file(argc, &file);
 	check_file_name(argv[1], &file);
-	if ((read = read_file(&file)) == ASM_FAIL)
-		return (ASM_FAIL);
-	if (read != ASM_FAIL)
-		file_error(NULL, &file);
-	if (parse_file(&file) == ASM_FAIL)
-		return (ASM_FAIL);
+	read_file(&file);
+	if (parse_file(&file) == LINE_FAIL)
+		file_error("parse_file() failed.", &file);
 	return (0);
 }

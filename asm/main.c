@@ -6,12 +6,11 @@
 /*   By: jaelee <jaelee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 11:15:51 by jaelee            #+#    #+#             */
-/*   Updated: 2019/03/15 06:09:21 by jaelee           ###   ########.fr       */
+/*   Updated: 2019/03/16 01:54:05 by jaelee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "assembler.h"
+#include "asm.h"
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <stdio.h>
@@ -34,7 +33,7 @@ static void	check_file_name(const char *filename, t_file *file)
 		file_error("failed to open the file.", file);
 	if (!(file->name_s = ft_strdup(filename)))
 		file_error("ft_strdup failed", file);
-	if (!(tmp = (char*)ft_strndup(filename, len - 2)))
+	if (!(tmp = (char*)ft_strsub(filename, 0, len - 2)))
 		file_error("ft_strndup failed", file);
 	if (!(file->name_cor = ft_strjoin(tmp, ".cor")))
 		file_error("ft_strjoin failed", file);
@@ -57,6 +56,8 @@ static void	init_file(t_file *file)
 	file->name_cor = NULL;
 	file->fd_s = -1;
 	file->fd_cor = -1;
+	ft_bzero(&(file->header.prog_name[0]), PROG_NAME_LENGTH + 1);
+	ft_bzero(&(file->header.how[0]), COMMENT_LENGTH + 1);
 }
 
 int		main(int argc, char **argv)

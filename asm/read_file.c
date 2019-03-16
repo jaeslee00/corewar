@@ -6,11 +6,11 @@
 /*   By: jaelee <jaelee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 22:17:00 by jaelee            #+#    #+#             */
-/*   Updated: 2019/03/15 05:38:40 by jaelee           ###   ########.fr       */
+/*   Updated: 2019/03/16 02:24:45 by jaelee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "assembler.h"
+#include "asm.h"
 #include "get_next_line.h"
 
 int		is_whitespaces_line(const char *str)
@@ -57,7 +57,7 @@ int		create_line(t_file *file, char *line, size_t nbr_lines, int line_type)
 	new_line.bytecode = NULL;
 	if (new_line.str && *(new_line.str))
 		list_append(&(file->lines), list_new(&new_line, sizeof(new_line)));
-	return (1);
+	return (SUCCESS);
 }
 
 int		add_lines(t_file *file, char *line, size_t *nbr_lines, size_t label_pos)

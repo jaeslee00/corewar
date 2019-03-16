@@ -6,7 +6,7 @@
 /*   By: jaelee <jaelee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 18:10:50 by jaelee            #+#    #+#             */
-/*   Updated: 2019/03/16 04:31:08 by jaelee           ###   ########.fr       */
+/*   Updated: 2019/03/16 23:46:32 by jaelee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ different tokens
 		- T_INDIRECT = INTEGER error ?
 		- T_INDIRLAB = : + LABEL
 */
+
 t_op	g_op_tab[17];
 
 int		is_comment(t_line *line)
@@ -38,7 +39,7 @@ int		is_comment(t_line *line)
 	int	index;
 
 	index = 0;
-	while (line->str && line->str[index] && isspace(line->str[index]))
+	while (line->str && line->str[index] && ft_isspace(line->str[index]))
 		index++;
 	if (line->str[index] == COMMENT_CHAR)
 	{
@@ -61,6 +62,8 @@ int		is_str_digit(char *str)
 	int	index;
 
 	index = 0;
+	if (str[index] == '+' || str[index] == '-')
+		index++;
 	while (str[index])
 	{
 		if (!ft_isdigit(str[index]))
@@ -90,28 +93,30 @@ int		check_token_type(t_token *token, char *str)
 			token->type = T_DIRECT;
 	}
 	else if (str[0] == REGISTER_CHAR && is_str_digit(str + 1))
-		token->type = T_REGISTR;
+		token->type = T_REGISTER;
 	else if (str[0] == LABEL_CHAR)
 		token->type = T_INDIRLAB;
 	else if (is_str_digit(str))
 		token->type = T_INDIRECT;
 	else
+	{
+		ft_printf("%s\n", str);
 		ERROR("no token_type found.", TOKEN_FAIL);
+	}
 	return (SUCCESS);
 }
 
 int		check_parameter(t_token *token, char *str)
 {
 	int index;
-	char *check;
 
 	index = 0;
-	check = LABEL_CHARS;
-	if (token->type == T_LABEL || T_DIRLAB || T_INDIRLAB)
+	if (token->type == T_LABEL || token->type == T_DIRLAB ||
+			token->type == T_INDIRLAB)
 	{
 		while (str[index])
 		{
-			if (!ft_strchr(check, str[index]) &&
+			if (!ft_strchr(LABEL_CHARS, str[index]) &&
 				!(index == 0 && str[index] == DIRECT_CHAR) &&
 					!((index == 0 | index == 1) && str[index] == LABEL_CHAR))
 				ERROR("wrong syntax of label.", TOKEN_FAIL);
@@ -119,11 +124,13 @@ int		check_parameter(t_token *token, char *str)
 		}
 		return (SUCCESS);
 	}
-	else if (token->type = T_REGISTR)
+	else if (token->type == T_REGISTER)
 	{
 		if (ft_atoi(str + 1) > REG_NUMBER)
 			ERROR("register number too high.", TOKEN_FAIL);
+		return (SUCCESS);
 	}
+	return (SUCCESS);
 }
 
 int		check_instr(t_token *token, char *str)
@@ -135,7 +142,7 @@ int		check_instr(t_token *token, char *str)
 	{
 		if (!ft_strcmp(str, g_op_tab[index].name))
 		{
-			if (token->op = (t_op*)malloc(sizeof(t_op)))
+			if (!(token->op = (t_op*)malloc(sizeof(t_op))))
 				ERROR("malloc failed", TOKEN_FAIL);
 			ft_memcpy(token->op, &g_op_tab[index], sizeof(t_op));
 			return (SUCCESS);
@@ -150,7 +157,7 @@ int		add_token(t_line *line, int token_id, int start, int end)
 	t_token		token;
 	int			len;
 
-	len = start - end;
+	len = end - start;
 	init_token(&token);
 	if (!(token.str = ft_strsub(line->str, start, len)))
 		ERROR("ft_strsub failed.", TOKEN_FAIL);
@@ -169,41 +176,83 @@ int		add_token(t_line *line, int token_id, int start, int end)
 
 int		tokenize_line(t_line *line)
 {
-	t_token	*token;
 	size_t	len;
-	int		start;
-	int		end;
+	int		i;
+	int		j;
 	int		token_id;
 
 	token_id = 0;
-	len = ft_strlen(line);
-	if (!(token = (t_token*)malloc(sizeof(t_token))))
-		ERROR("malloc failed.", LINE_FAIL);
-	while (line->pos < len)
+	i = 0;
+	j = 0;
+	len = ft_strlen(line->str);
+	while (token_id < 7)
 	{
 		if (token_id > 5)
 			ERROR("Too many tokens.", LINE_FAIL);
-		while (line->str[line->pos] && ft_isspace(line->str))
-			line->pos++;
-		start = line->pos;
-		while (line->str[line->pos] && !(ft_isspace(line->str)) &&
-			line->str[line->pos] != SEPARATOR_CHAR)
-			line->pos++;
-		end = line->pos;
-		if (add_token(line, token_id, start, end) == LINE_FAIL)
+		while (line->str[i] && ft_isspace(line->str[i]))
+			i++;
+		j = i;
+		while (line->str[j] && !(ft_isspace(line->str[j])) &&
+			line->str[j] != SEPARATOR_CHAR)
+			j++;
+		printf("%d %d\n", i, j);
+		if (add_token(line, token_id, i, j) == LINE_FAIL)
 			ERROR("tokenize failed.", LINE_FAIL);
+		i = j + 1;
+		if (line->str[i - 1] == '\0')
+			break ;
 		token_id++;
+	}
+	line->nbr_params = token_id;
+	return (SUCCESS);
+}
+
+int		validate_opcode_params(t_line *line)
+{
+	t_list	*traverse;
+	int		instr;
+	int		nbr;
+
+	if (!(traverse = line->tokens))
+		return (LINE_FAIL);
+	if (traverse->next == NULL)
+		return (LINE_FAIL);
+	instr = TOKEN->op->opcode - 1;
+	printf("original : %s\nthe_code : %s\n", g_op_tab[instr].name, line->str);
+	printf("original : %d\nthe_code : %d\n", g_op_tab[instr].nbr_params, line->nbr_params);
+	if (g_op_tab[instr].nbr_params != line->nbr_params)
+		ERROR("wrong number of parameters", LINE_FAIL);
+	if (traverse->next == NULL)
+		return (LINE_FAIL);
+	traverse = traverse->next;
+	nbr = 0;
+	while (traverse || nbr < g_op_tab[instr].nbr_params)
+	{
+		/* compare parsed params to g_op_tab[instr] */
+		/* D2, D4 also needs to be checked */
+		traverse = traverse->next;
+		nbr++;
 	}
 	return (SUCCESS);
 }
 
-int		check_instrutions(t_line *line)
+void	set_progname(t_file *file)
 {
-	/* TODO */
-	return (SUCCESS);
+	t_list	*traverse;
+
+	traverse = file->lines;
+	ft_memcpy(file->header.prog_name, LINE->str, ft_strlen(LINE->str));
+	LINE->type = T_NAME;
+	(void)file;
 }
-
-
+void	set_how(t_file *file)
+{
+	t_list *traverse;
+	traverse = file->lines;
+	ft_memcpy(file->header.how, LINE->str, ft_strlen(LINE->str));
+	LINE->type = T_NAME;
+	(void)file;
+}
 
 int		parse_file(t_file *file)
 {
@@ -216,16 +265,15 @@ int		parse_file(t_file *file)
 		{
 			if (!(file->header.prog_name[0]))
 				set_progname(file);
-			if (!(file->header.how[0]))
+			else if (!(file->header.how[0]))
 				set_how(file);
-			if (LINE->type != T_LABEL)
+			else if (LINE->type != T_LABEL)
 				LINE->type = T_ASMCODE;
 			if (LINE->type == T_ASMCODE && (!(tokenize_line(LINE)) ||
-				!(validate_parameters(LINE))))
-					file_error("parse failed", file);
+				!(validate_opcode_params(LINE))))
+					file_error("parse failed.", file);
 		}
 		traverse = traverse->next;
 	}
+	return (SUCCESS);
 }
-
-

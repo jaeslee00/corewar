@@ -6,7 +6,7 @@
 /*   By: jaelee <jaelee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/23 12:35:50 by jaelee            #+#    #+#             */
-/*   Updated: 2019/03/24 16:14:46 by jaelee           ###   ########.fr       */
+/*   Updated: 2019/03/24 19:18:49 by jaelee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,85 @@ t_op	*operation_set(t_line *line)
 	return (NULL);
 }
 
+void	get_label_value(void)
+{
+	return ;
+}
+
+int		param_getvalue(t_list *lines, t_line *line, t_token *token)
+{
+	char	*label;
+	t_list	*traverse;
+	(void)line;
+
+	label = NULL;
+	if (token->type == T_DIRECT || token->type == T_REGISTER)
+		token->value = ft_atoi(token->str + 1);
+	else if (token->type == T_INDIRECT)
+		token->value = ft_atoi(token->str);
+	else if (token->type == T_DIRLAB || token->type == T_INDIRLAB)
+	{
+		label = token->type == T_DIRLAB ? token->str + 2 : token->str + 1;
+		traverse = lines;
+		while (traverse)
+		{
+			if (((t_line*)traverse->content)->type == T_LABEL &&
+				!ft_strcmp(label, ((t_line*)traverse->content)->str))
+			{
+				get_label_value(); /*TODO fuck.... dunno how direct and indirect labels  are different..*/
+				return (SUCCESS);
+			}
+			traverse = traverse->next;
+		}
+		ERROR("noooooooo label doesn't exist.", 0);
+	}
+	return (SUCCESS);
+}
+
+void	param_translate(unsigned char *bytecode, size_t size, int *index, int value) /*TODO */
+{
+	(void)size;
+	return ;
+}
+
 int		bytecode_conversion(t_file *file, t_line *line, t_op *op)
 {
-	(void)file;
-	(void)line;
-	(void)op;
-	return (1);
+	t_list			*traverse;
+	int				bc_index;
+	unsigned char	*bytecode;
+
+	bc_index = 0;
+	traverse = line->tokens->next;
+	bytecode = line->bytecode;
+	while (traverse)
+	{
+		if (!(param_getvalue(file->lines, line, ((t_token*)traverse->content))))
+			ERROR("param_getvalue failed.", 0);
+
+		if (((t_token*)traverse->content)->type == T_INDIRECT ||
+				((t_token*)traverse->content)->type == T_INDIRLAB)
+			param_translate(bytecode, INDIRECT_SIZE, &bc_index,
+				((t_token*)traverse->content)->value); /* TODO */
+
+		else if (((t_token*)traverse->content)->type == T_DIRLAB ||
+					(((t_token*)traverse->content)->type == T_DIRECT &&
+						op->relative))
+			param_translate(bytecode, DIRECT_D2_SIZE, &bc_index,
+				((t_token*)traverse->content)->value);
+
+		else if (((t_token*)traverse->content)->type == T_DIRECT &&
+					!(op->relative))
+			param_translate(bytecode, DIRECT_D4_SIZE, &bc_index,
+				((t_token*)traverse->content)->value);
+
+		else if (((t_token*)traverse->content)->type == T_REGISTER)
+			param_translate(bytecode, REGISTER_INDEX_SIZE, &bc_index,
+				((t_token*)traverse->content)->value);
+
+		printf("param value : %d\n", ((t_token*)traverse->content)->value);
+		traverse = traverse->next;
+	}
+	return 1;
 }
 
 int		file_conversion(t_file *file)

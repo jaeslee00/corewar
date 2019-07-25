@@ -6,11 +6,12 @@
 /*   By: aamadori <aamadori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/08 18:16:27 by aamadori          #+#    #+#             */
-/*   Updated: 2019/02/05 00:12:06 by aamadori         ###   ########.fr       */
+/*   Updated: 2019/06/06 15:43:58 by aamadori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "ft_assert.h"
 #include <stdlib.h>
 
 static size_t	count_words(char const *s, char c)
@@ -51,6 +52,7 @@ char			**ft_strsplit(char const *s, char c)
 	size_t	word_index;
 
 	array = (char**)malloc(sizeof(char*) * (count_words(s, c) + 1));
+	ft_malloc_assert(array);
 	if (array)
 	{
 		index = 0;
@@ -65,8 +67,6 @@ char			**ft_strsplit(char const *s, char c)
 				ft_strncpy(array[word_index++], &s[index],
 						word_length(&s[index], c));
 			}
-			while (s[index] && s[index] != c)
-				index++;
 		}
 		array[word_index] = 0;
 	}

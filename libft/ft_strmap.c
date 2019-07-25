@@ -6,11 +6,12 @@
 /*   By: aamadori <aamadori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 17:51:49 by aamadori          #+#    #+#             */
-/*   Updated: 2018/12/06 11:17:45 by aamadori         ###   ########.fr       */
+/*   Updated: 2019/05/28 17:43:06 by aamadori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "ft_assert.h"
 #include <stdlib.h>
 
 char	*ft_strmap(char const *s, char (*f)(char))
@@ -23,6 +24,7 @@ char	*ft_strmap(char const *s, char (*f)(char))
 	{
 		index = 0;
 		new = (char*)malloc(ft_strlen(s) + 1);
+		ft_malloc_assert(new);
 		while (new && s[index])
 		{
 			new[index] = f(s[index]);

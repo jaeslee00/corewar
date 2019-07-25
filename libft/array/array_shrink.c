@@ -3,27 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   array_shrink.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaelee <jaelee@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aamadori <aamadori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/20 15:07:13 by jaelee            #+#    #+#             */
-/*   Updated: 2019/01/20 15:46:47 by aamadori         ###   ########.fr       */
+/*   Updated: 2019/05/28 17:43:06 by aamadori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "array.h"
+#include "ft_assert.h"
 
 void	array_shrink(t_array *array)
 {
-	void	*new_ptr;
 	size_t	malloc_size;
 
 	malloc_size = array->elem_size * array->length;
-	if (array->reserved <= malloc_size)
-		return ;
-	new_ptr = malloc(malloc_size);
-	if (new_ptr && array->ptr)
-		fast_copy(new_ptr, array->ptr, malloc_size);
-	free(array->ptr);
-	array->ptr = new_ptr;
+	ft_assert(array->reserved <= malloc_size,
+		"Reserved memory less than necessary to hold array.");
+	array->ptr = realloc(array->ptr, malloc_size);
+	ft_malloc_assert(array->ptr);
 	array->reserved = malloc_size;
 }

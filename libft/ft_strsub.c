@@ -6,11 +6,12 @@
 /*   By: aamadori <aamadori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 18:09:10 by aamadori          #+#    #+#             */
-/*   Updated: 2018/12/06 11:16:53 by aamadori         ###   ########.fr       */
+/*   Updated: 2019/05/28 17:43:06 by aamadori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "ft_assert.h"
 #include <stdlib.h>
 
 char	*ft_strsub(char const *s, unsigned int start, size_t len)
@@ -21,6 +22,7 @@ char	*ft_strsub(char const *s, unsigned int start, size_t len)
 	if (s)
 	{
 		substr = malloc(len + 1);
+		ft_malloc_assert(substr);
 		if (substr)
 		{
 			ft_memcpy(substr, s + start, len);

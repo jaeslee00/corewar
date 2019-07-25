@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaelee <jaelee@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aamadori <aamadori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 14:45:35 by aamadori          #+#    #+#             */
-/*   Updated: 2019/03/11 18:17:47 by jaelee           ###   ########.fr       */
+/*   Updated: 2019/06/06 15:45:06 by aamadori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,6 @@
 # define ANSI_COLOR_CYAN "\x1b[36m"
 # define ANSI_COLOR_RESET "\x1b[0m"
 
-# define ABS(x) ((x) >= 0 ? (x) : -(x))
-# define MIN(x, y) ((x) < (y) ? (x) : (y))
-# define MAX(x, y) ((x) >= (y) ? (x) : (y))
-# define LST(lst, type) ((type*)(lst)->content)
-
 typedef int			(*t_comparison)(const void *c1, const void *c2);
 typedef int			(*t_int_comparison)(int c1, int c2);
 
@@ -46,6 +41,7 @@ int				ft_isupper(char c);
 int				ft_islower(char c);
 int				ft_max(int a, int b);
 int				ft_min(int a, int b);
+intmax_t		ft_abs(intmax_t a);
 int				ft_isspace(char c);
 void			ft_putchar(char c);
 void			ft_putstr(char const *s);
@@ -60,7 +56,6 @@ void			*ft_memccpy(void *dst, const void *src, int c, size_t n);
 void			*ft_memmove(void *dst, const void *src, size_t len);
 int				ft_memcmp(const void *s1, const void *s2, size_t n);
 char			*ft_strdup(const char *s1);
-char			*ft_strndup(const char *s1, size_t n);
 char			*ft_strcpy(char *dst, const char *src);
 char			*ft_strncpy(char *dst, const char *src, size_t n);
 char			*ft_strcat(char *s1, const char *s2);
@@ -80,7 +75,7 @@ int				ft_isalnum(int c);
 int				ft_atoi(const char *str);
 int				ft_tolower(int c);
 int				ft_toupper(int c);
-void			ft_free_stub(void *ptr, size_t stub);
+void			free_stub(void *ptr, size_t stub);
 void			*ft_memalloc(size_t size);
 void			ft_memdel(void **ap);
 char			*ft_strnew(size_t size);
@@ -107,5 +102,6 @@ char			*ft_itoa_base(int number, const char *base);
 ssize_t			ft_readbuff(int fd, char *buf, size_t len);
 int				ft_witomb(char *str, wchar_t wc);
 double			ft_sqrt(double num);
+int				read_whole(int fd, char *buffer, size_t size);
 
 #endif

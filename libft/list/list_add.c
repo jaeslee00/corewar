@@ -6,7 +6,7 @@
 /*   By: aamadori <aamadori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 00:32:22 by aamadori          #+#    #+#             */
-/*   Updated: 2019/01/20 12:46:55 by aamadori         ###   ########.fr       */
+/*   Updated: 2019/03/31 16:28:45 by aamadori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	list_add(t_list **alst, t_list *new)
 {
-	if (alst)
+	if (alst && new)
 	{
 		new->next = (*alst);
 		if (*alst)

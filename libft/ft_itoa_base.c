@@ -6,11 +6,12 @@
 /*   By: aamadori <aamadori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 19:15:09 by aamadori          #+#    #+#             */
-/*   Updated: 2018/12/09 23:02:17 by aamadori         ###   ########.fr       */
+/*   Updated: 2019/06/06 15:43:12 by aamadori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "ft_assert.h"
 #include <stdlib.h>
 
 static char		*append(char *str, char chr)
@@ -22,6 +23,7 @@ static char		*append(char *str, char chr)
 	while (str[index])
 		index++;
 	ret = malloc(index + 2);
+	ft_malloc_assert(ret);
 	if (!ret)
 		return (NULL);
 	index = 0;
@@ -38,7 +40,7 @@ static int		find_largest_divisor(int number, int base_size)
 	int	divisor;
 
 	divisor = base_size;
-	while (ABS(number / divisor) >= base_size)
+	while (ft_abs(number / divisor) >= base_size)
 		divisor *= base_size;
 	return (divisor);
 }
@@ -58,10 +60,10 @@ char			*ft_itoa_base(int number, const char *base)
 	started = 0;
 	while (divisor >= 1)
 	{
-		if (started || divisor == 1 || ABS(number / divisor) > 0)
+		if (started || divisor == 1 || ft_abs(number / divisor) > 0)
 		{
 			started = 1;
-			str = append(str, ABS(number / divisor) + '0');
+			str = append(str, ft_abs(number / divisor) + '0');
 			number = number - (number / divisor) * divisor;
 		}
 		divisor /= base_size;

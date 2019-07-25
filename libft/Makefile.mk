@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile.mk                                        :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: aamadori <aamadori@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/06/06 15:42:31 by aamadori          #+#    #+#              #
+#    Updated: 2019/06/06 15:42:37 by aamadori         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 LIBFT_SRCS = ft_memset.c \
 		ft_bzero.c \
 		ft_memcpy.c \
@@ -55,6 +67,9 @@ LIBFT_SRCS = ft_memset.c \
 		ft_putnbr_fd.c \
 		ft_splitdel.c \
 		ft_readbuff.c \
+		ft_assert.c \
+		free_stub.c \
+		read_whole.c \
 		list/list_new.c \
 		list/list_delone.c \
 		list/list_del.c \
@@ -89,6 +104,7 @@ LIBFT_SRCS = ft_memset.c \
 		tree/tree_pre_traverse.c \
 		tree/tree_in_traverse.c \
 		tree/tree_post_traverse.c \
+		ft_abs.c \
 		ft_max.c \
 		ft_min.c \
 		ft_sqrt.c \
@@ -100,7 +116,11 @@ LIBFT_OBJS := $(patsubst %.c,obj/%.o,$(LIBFT_SRCS))
 
 LIBFT_INCLUDES = includes/libft.h \
 		includes/list.h \
-		includes/get_next_line.h
+		includes/get_next_line.h \
+		includes/array.h \
+		includes/queue.h \
+		includes/tree.h \
+		includes/ft_assert.h
 LIBFT_INCLUDE_FOLDERS = includes/
 LIBFT_NAME = libft.a
 

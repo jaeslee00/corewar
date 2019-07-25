@@ -6,11 +6,12 @@
 /*   By: aamadori <aamadori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/20 14:47:25 by aamadori          #+#    #+#             */
-/*   Updated: 2019/01/20 15:25:11 by aamadori         ###   ########.fr       */
+/*   Updated: 2019/05/28 17:43:06 by aamadori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "array.h"
+#include "ft_assert.h"
 
 void	fast_copy(void *dst, const void *src, size_t size)
 {
@@ -37,14 +38,9 @@ void	fast_copy(void *dst, const void *src, size_t size)
 
 void	array_reserve(t_array *array, size_t size)
 {
-	void	*new_ptr;
-
 	if (array->reserved >= size)
 		return ;
-	new_ptr = malloc(size);
-	if (new_ptr && array->ptr)
-		fast_copy(new_ptr, array->ptr, array->length * array->elem_size);
-	free(array->ptr);
-	array->ptr = new_ptr;
+	array->ptr = realloc(array->ptr, size);
+	ft_malloc_assert(array->ptr);
 	array->reserved = size;
 }

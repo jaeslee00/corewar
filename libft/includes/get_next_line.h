@@ -6,7 +6,7 @@
 /*   By: aamadori <aamadori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/10 20:12:50 by aamadori          #+#    #+#             */
-/*   Updated: 2019/01/20 12:48:04 by aamadori         ###   ########.fr       */
+/*   Updated: 2019/05/27 18:45:28 by aamadori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define _GET_NEXT_LINE_H
 
 # define BUFF_SIZE 16384
-# define NODE_BUFF(n) ((t_filebuffer*)((n)->content))
-# define CURR_PTR(n) (NODE_BUFF(n)->text_buffer + NODE_BUFF(n)->index)
 
 # include <sys/types.h>
 

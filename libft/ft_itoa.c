@@ -6,7 +6,7 @@
 /*   By: aamadori <aamadori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 18:41:28 by aamadori          #+#    #+#             */
-/*   Updated: 2018/12/06 11:15:24 by aamadori         ###   ########.fr       */
+/*   Updated: 2019/06/06 15:43:22 by aamadori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static size_t	digits(int n)
 	size_t	digits;
 
 	digits = 1;
-	while (ABS(n) > 9)
+	while (ft_abs(n) > 9)
 	{
 		n /= 10;
 		digits++;
@@ -42,9 +42,9 @@ static void		generate_string(char *str, int n)
 	first_digit = 0;
 	while (divisor > 0)
 	{
-		if (first_digit || ABS(n / divisor) > 0)
+		if (first_digit || ft_abs(n / divisor) > 0)
 		{
-			str[str_index++] = ABS(n / divisor) + '0';
+			str[str_index++] = ft_abs(n / divisor) + '0';
 			n -= (n / divisor) * divisor;
 			first_digit = 1;
 		}

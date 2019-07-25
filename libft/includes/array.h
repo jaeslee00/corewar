@@ -6,7 +6,7 @@
 /*   By: aamadori <aamadori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/20 14:41:30 by aamadori          #+#    #+#             */
-/*   Updated: 2019/02/10 17:35:38 by aamadori         ###   ########.fr       */
+/*   Updated: 2019/05/27 18:28:59 by aamadori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define _ARRAY_H
 
 # include "libft.h"
-
-# define ARRAY_PTR(arr, type) ((type*)(arr).ptr)
 
 typedef struct		s_array
 {

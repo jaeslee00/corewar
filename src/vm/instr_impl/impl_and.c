@@ -1,0 +1,61 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   impl_and.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aamadori <aamadori@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/01 15:41:28 by aamadori          #+#    #+#             */
+/*   Updated: 2019/06/08 13:03:25 by aamadori         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "vm.h"
+
+static t_bigend_buffer	bitwise_and(t_bigend_buffer f, t_bigend_buffer s)
+{
+	t_bigend_buffer	ret;
+
+	ret.buffer = f.buffer & s.buffer;
+	return (ret);
+}
+
+static t_bigend_buffer	handle_argument(t_vm_state *state, t_process *process,
+							t_instr *instr, size_t index)
+{
+	t_bigend_buffer	ret;
+	size_t			offset;
+
+	if (*(arg_type(instr, index)) == e_register)
+		ft_memcpy(&ret,
+			&(register_get(process, *(arg_reg(instr, index)) - 1))->content,
+			sizeof(t_bigend_buffer));
+	else if (*(arg_type(instr, index)) == e_index)
+	{
+		offset = byte_order_swap(
+				(arg_ind(instr, index))->content).buffer;
+		offset = process->program_counter + (offset % IDX_MOD);
+		ret = mem_load(state, offset, REG_SIZE);
+	}
+	else
+		ft_memcpy(&ret,
+			&(arg_dir(instr, index))->content,
+			sizeof(t_bigend_buffer));
+	return (ret);
+}
+
+void					impl_and(t_vm_state *state, size_t p_index,
+							t_instr *instr)
+{
+	t_bigend_buffer	first_operand;
+	t_bigend_buffer	second_operand;
+	t_process		*process;
+
+	process = process_get(state, p_index);
+	first_operand = handle_argument(state, process, instr, 0);
+	second_operand = handle_argument(state, process, instr, 1);
+	(register_get(process, *(arg_reg(instr, 2)) - 1))->content = bitwise_and(
+			first_operand, second_operand);
+	process->carry = buffer_is_zero(
+			(register_get(process, *(arg_reg(instr, 2)) - 1))->content);
+}

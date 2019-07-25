@@ -6,7 +6,7 @@
 /*   By: aamadori <aamadori@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/08 19:30:32 by aamadori          #+#    #+#             */
-/*   Updated: 2018/12/06 11:16:25 by aamadori         ###   ########.fr       */
+/*   Updated: 2019/06/06 15:43:37 by aamadori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	ft_putnbr(int n)
 	first_digit = 0;
 	while (divisor > 0)
 	{
-		if (first_digit || ABS(n / divisor) > 0)
+		if (first_digit || ft_abs(n / divisor) > 0)
 		{
-			ft_putchar(ABS(n / divisor) + '0');
+			ft_putchar(ft_abs(n / divisor) + '0');
 			n -= (n / divisor) * divisor;
 			first_digit = 1;
 		}

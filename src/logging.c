@@ -12,7 +12,6 @@
 
 #include "logging.h"
 #include "ft_assert.h"
-
 void	log_level_va(t_log_info *info, uint64_t type,
 			const char *format, va_list *ap)
 {
